@@ -41,16 +41,39 @@ namespace DalamudPlugin
 
                 else if (bits[0] == "w" | bits[0] == "window")
                 {
-                    if (this.chatWindow)
+                    if (bits.Length == 1)
                     {
-                        this.chatWindow = false;
-                        PrintChat(XivChatType.Notice, "<CHT>", "Closed Chat Window");
+                        if (this.chatWindow)
+                        {
+                            this.chatWindow = false;
+                            PrintChat(XivChatType.Notice, "<CHT>", "Closed Chat Window");
+                        }
+                        else
+                        {
+                            this.chatWindow = true;
+                            PrintChat(XivChatType.Notice, "<CHT>", "Opened Chat Window");
+                        }
                     }
                     else
                     {
-                        this.chatWindow = true;
-                        PrintChat(XivChatType.Notice, "<CHT>", "Opened Chat Window");
+                        if (bits[1] == "show")
+                        {
+                            if (!this.chatWindow)
+                                PrintChat(XivChatType.Notice, "<CHT>", "Opened Chat Window");
+                            this.chatWindow = true;
+                        }
+                        else if (bits[1] == "hide")
+                        {
+                            if (this.chatWindow)
+                                PrintChat(XivChatType.Notice, "<CHT>", "Closed Chat Window");
+                            this.chatWindow = false;
+                        }
+                        else
+                        {
+                            PrintChat(XivChatType.SystemError, "<CHT>", "Invalid command");
+                        }
                     }
+
                     return;
                 }
 
